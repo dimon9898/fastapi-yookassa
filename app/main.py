@@ -39,7 +39,7 @@ async def payment_webhook(request: Request, bot: Bot = Depends(get_bot)):
 
 
 
-async def send_notification(user_id, text):
+async def send_notification(user_id: int, text: str):
     await bot.send_message(chat_id=user_id, text=text)
 
 
