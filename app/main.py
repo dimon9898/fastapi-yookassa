@@ -20,7 +20,7 @@ async def get_bot():
 app = FastAPI()
 
 
-@app.post('/webhook')
+@app.post('/webhook', status_code=status.HTTP_200_OK)
 async def payment_webhook(request: Request, bot: Bot = Depends(get_bot)):
     data = await request.json()
     result = json.dumps(data, indent=4, ensure_ascii=False)
