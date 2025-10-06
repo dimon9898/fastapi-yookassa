@@ -1,6 +1,8 @@
 import json
+from aiogram import Bot
 from fastapi import FastAPI, HTTPException, Request, status
 import logging
+from run import bot
 
 
 logging.basicConfig(
@@ -18,10 +20,10 @@ app = FastAPI()
 
 
 @app.post('/webhook')
-async def payment_webhook(request: Request):
+async def payment_webhook(request: Request, bot: Bot):
     data = await request.json()
     result = json.dumps(data, indent=4, ensure_ascii=False)
-    logger.info(f'INFO: {result}')
+    await bot.send_message(chat_id=7886074197, text=f'{result}')
     return {'ok': True}
 
 
