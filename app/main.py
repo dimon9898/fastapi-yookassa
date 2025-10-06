@@ -1,10 +1,13 @@
-import asyncio
 import json
+import logging
 from fastapi import FastAPI, Request, status
-from run import bot  # ← импортируем готовый экземпляр!
+from aiogram import Bot
+from run import bot
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("fastapi")
 
 app = FastAPI()
-
 
 @app.post("/webhook", status_code=status.HTTP_200_OK)
 async def payment_webhook(request: Request):
@@ -16,15 +19,11 @@ async def payment_webhook(request: Request):
         user_id = metadata.get("user_id")
 
         if user_id:
-            # создаём задачу на фоновую отправку
-            asyncio.create_task(send_notification(user_id, text="✅ Оплата прошла успешно!"))
+            try:
+                user_id = int(user_id)
+                await bot.send_message(chat_id=user_id, text="✅ Оплата прошла успешно!")
+                logger.info(f"Сообщение отправлено пользователю {user_id}")
+            except Exception as e:
+                logger.error(f"Ошибка при отправке пользователю {user_id}: {e}")
 
     return {"ok": True}
-
-
-async def send_notification(user_id: int, text: str):
-    """Безопасная отправка уведомления пользователю"""
-    try:
-        await bot.send_message(chat_id=user_id, text=text)
-    except Exception as e:
-        print(f"⚠️ Ошибка при отправке пользователю {user_id}: {e}")
