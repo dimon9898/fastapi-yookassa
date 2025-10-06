@@ -23,8 +23,7 @@ app = FastAPI()
 @app.post('/webhook', status_code=status.HTTP_200_OK)
 async def payment_webhook(request: Request, bot: Bot = Depends(get_bot)):
     data = await request.json()
-    result = json.dumps(data, indent=4, ensure_ascii=False)
-    await bot.send_message(chat_id=7886074197, text=f'{result}')
+    await bot.send_message(chat_id=7886074197, text=f'ОК')
     return {'ok': True}
 
 
