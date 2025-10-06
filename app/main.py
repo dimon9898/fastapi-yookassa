@@ -14,15 +14,13 @@ logging.basicConfig(
 
 logger = logging.getLogger('fastapi')
 
-async def get_bot():
-    return bot
 
 
 app = FastAPI()
 
 
 @app.post('/webhook', status_code=status.HTTP_200_OK)
-async def payment_webhook(request: Request, bot: Bot = Depends(get_bot)):
+async def payment_webhook(request: Request):
     data = await request.json()
     
     if data.get('event') == 'payment.succeeded':
