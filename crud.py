@@ -11,7 +11,8 @@ async def generate_url(amount: float, user_id: int, user_name: str, course_id: i
     idempotence = str(uuid.uuid4())
     
     headers = {
-        'Idempotence-Key': idempotence
+        'Idempotence-Key': idempotence,
+        'Content-Type': 'application/json'
     }
     
     auth = (YOOKASSA_ID, YOOKASSA_SECRET_KEY)

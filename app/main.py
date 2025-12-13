@@ -9,21 +9,8 @@ logger = logging.getLogger("fastapi")
 
 app = FastAPI()
 
-@app.post("/webhook", status_code=status.HTTP_200_OK)
+@app.post("/webhook")
 async def payment_webhook(request: Request):
     data = await request.json()
-
-    if data.get("event") == "payment.succeeded":
-        payment = data.get("object", {})
-        metadata = payment.get("metadata", {})
-        user_id = metadata.get("user_id")
-
-        if user_id:
-            try:
-                user_id = int(user_id)
-                await bot.send_message(chat_id=user_id, text="✅ Оплата прошла успешно!")
-                logger.info(f"Сообщение отправлено пользователю {user_id}")
-            except Exception as e:
-                logger.error(f"Ошибка при отправке пользователю {user_id}: {e}")
-
+    logger.error(f"YOOKASSA WEBHOOK: {data}")
     return {"ok": True}
